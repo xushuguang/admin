@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.james.admin.dao.VideosMapper" >
+    <resultMap id="Videos" type="com.james.admin.domain.Videos" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="vd_name" property="vdName" jdbcType="VARCHAR" />
+        <result column="vd_url" property="vdUrl" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+        <result column="operator" property="operator" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Videos_Column_List" >
+      id,
+      vd_name,
+      vd_url,
+      status,
+      gmt_create,
+      gmt_modified,
+      operator,
+      remark
+    </sql>
+    <insert id="addVideos" parameterType="com.james.admin.domain.Videos">
+      insert into videos (vd_name, vd_url, gmt_create, gmt_modified,operator,remark)
+      values (#{vdName}, #{vdUrl},now(),now(),#{operator},#{remark})
+    </insert>
+
+    <select id="selectAllVideos" resultMap="Videos">
+        SELECT <include refid="Videos_Column_List" />
+        FROM videos
+        WHERE status=0
+        ORDER by id DESC
+    </select>
+
+    <select id="selectVideosByUser" parameterType="java.lang.Long" resultMap="Videos">
+        SELECT <include refid="Videos_Column_List" />
+        FROM videos
+        WHERE operator=#{userId}
+        AND status=0
+        ORDER by id DESC
+    </select>
+</mapper>

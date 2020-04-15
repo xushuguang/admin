@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.james.admin.dao.ImagesMapper" >
+    <resultMap id="Images" type="com.james.admin.domain.Images" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="img_name" property="imgName" jdbcType="VARCHAR" />
+        <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+        <result column="operator" property="operator" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Images_Column_List" >
+      id,
+      img_name,
+      img_url,
+      status,
+      gmt_create,
+      gmt_modified,
+      operator,
+      remark
+    </sql>
+    <insert id="addImages" parameterType="com.james.admin.domain.Images">
+      insert into images (img_name, img_url, gmt_create, gmt_modified,operator,remark)
+      values (#{imgName}, #{imgUrl},now(),now(),#{operator},#{remark})
+    </insert>
+
+    <select id="selectAllImages" resultMap="Images">
+        SELECT <include refid="Images_Column_List" />
+        FROM images
+        WHERE status=0
+        ORDER by id DESC
+    </select>
+
+    <select id="selectImagesByUser" parameterType="java.lang.Long" resultMap="Images">
+        SELECT <include refid="Images_Column_List" />
+        FROM images
+        WHERE operator=#{userId}
+        AND status=0
+        ORDER by id DESC
+    </select>
+</mapper>

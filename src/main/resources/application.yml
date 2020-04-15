@@ -1,0 +1,75 @@
+server:
+  port: 8761
+
+app:
+  id: apollo-demo
+apollo:
+  meta: http://106.15.185.148:8080
+  bootstrap:
+    enabled: true
+    eagerLoad:
+      enabled: true
+
+logging:
+  path: /home/www/logs/apollo-demo/
+  file: apollo-demo.log
+  level:
+    root: info
+  pattern:
+    console: '%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n'
+    file: '%d{yyyy/MM/dd-HH:mm} [%thread] %-5level %logger- %msg%n'
+
+
+
+spring:
+  datasource:
+    url: jdbc:mysql://106.15.185.148:3306/admin?characterEncoding=utf8&useSSL=false&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false
+    username: root
+    password: Pa55w0rd!
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  kafka:
+    producer:
+      bootstrap-servers: 106.15.185.148:9092
+    consumer:
+      enable-auto-commit: true
+      group-id: applog
+      auto-offset-reset: latest
+      bootstrap-servers: 106.15.185.148:9092
+  redis:
+    host: 106.15.185.148
+    port: 6379
+    password: Pa55w0rd!
+    timeout: 1000ms
+    jedis:
+      pool:
+        max-active: 200
+        max-wait: -1ms
+        max-idle: 10
+        min-idle: 0
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1024MB
+
+
+mybatis:
+  type-aliases-package: com.james.admin.dao
+  mapper-locations: classpath*:mapper/*.xml
+
+FTP:
+  IMAGEPATH:  /home/ftpuser/images
+  MUSICPATH:  /home/ftpuser/music
+  VIDEOPATH:  /home/ftpuser/video
+  FILEPATH:  /home/ftpuser/file
+  IMAGEBASEURL:  http://106.15.185.148/images
+  MUSICBASEURL:  http://106.15.185.148/music
+  VIDEOBASEURL:  http://106.15.185.148/video
+  FILEBASEURL:  http://106.15.185.148/file
+
+zookeeper:
+  address: 106.15.185.148:2181
+  timeout: 4000
+
+
+
